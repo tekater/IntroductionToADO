@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
 
+using System.Threading;
+
 
 namespace IntroductionToADO
 {
@@ -28,17 +30,52 @@ namespace IntroductionToADO
 			//cmd.ExecuteNonQuery(); // INSERT,UPDATE,DELETE 
 
 			// Выборка:
-			string select_string = @"SELECT * FROM Authors";
+			string select_string = @"SELECT Authors.last_name + ' ' + Authors.first_name , Books.title FROM Books , Authors WHERE Books.author = Authors.id";
 			cmd.CommandText = (select_string);
 
 			SqlDataReader rdr = cmd.ExecuteReader();
 			while (rdr.Read())
 			{
-				Console.WriteLine($"{rdr[0]} {rdr[1]} {rdr[2]}");
+				Console.WriteLine($"{rdr[0]} \t {rdr[1]}");
             }
+			rdr.Close();
+			int choose = 1;
+            Console.WriteLine($"\n\nВведите действие:\n[1] - добавить книгу\n[?] - выйти.\n");
+			//choose = Convert.ToInt32(Console.Read());
+            switch (choose)
+			{
+				case 0:
+					break;
+				case 1:
+					{
+                        Console.WriteLine("Введите имя Автора книги:\n");
+                        string first_name = Console.ReadLine();
+						Console.WriteLine("Введите Фамилию Автора книги:\n");
+						string last_name = Console.ReadLine();
 
+						SqlCommand author_cmd = new SqlCommand($"INSERT INTO Authors (first_name,last_name) VALUES ('{first_name}','{last_name}')", connection);
+						//author_cmd.ExecuteNonQuery();
 
-			connection.Close();		// Соединения обязательно нужно закрывать.
+						author_cmd.CommandText = ($"SELECT Authors.id FROM Authors WHERE Authors.first_name = '{first_name}' AND Authors.last_name = '{last_name}'");
+						SqlDataReader author_rdr = author_cmd.ExecuteReader();
+						author_rdr.Read();
+
+                        Console.WriteLine("Введите название книги:\n");
+						string book = Console.ReadLine();
+						Console.WriteLine("Введите стоимость книги:\n");
+						int price = Convert.ToInt32(Console.ReadLine());
+						Console.WriteLine("Введите количество страниц книги:\n");
+						int pages = Convert.ToInt32(Console.Read());
+						SqlCommand book_cmd = new SqlCommand($"INSERT INTO Books (author,title) VALUES ({author_rdr[0]},{book}", connection);
+						author_rdr.Close();
+						book_cmd.ExecuteNonQuery();
+					}
+					break;
+			}
+
+			Thread.Sleep(3000);
+			
+						connection.Close();		// Соединения обязательно нужно закрывать.
 		}
 	}
 }
