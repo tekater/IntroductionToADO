@@ -1,0 +1,33 @@
+﻿CREATE TABLE [dbo].[Officers]
+(
+	[id]			INT NOT NULL  IDENTITY(1,1) PRIMARY KEY,
+	[first_name]	NVARCHAR(100) NOT NULL,
+	[last_name]		NVARCHAR(100) NOT NULL
+)
+GO;
+
+CREATE TABLE [dbo].[Culprit]
+(
+	[id]			INT NOT NULL  IDENTITY(1,1) PRIMARY KEY,
+	[first_name]	NVARCHAR(100) NOT NULL,
+	[last_name]		NVARCHAR(100) NOT NULL
+)
+GO;
+CREATE TABLE [dbo].[Transgression]
+(
+	[id]					INT NOT NULL  IDENTITY(1,1) PRIMARY KEY,
+	[content]				NVARCHAR(500) NOT NULL
+)
+GO;
+
+CREATE TABLE [dbo].[Crime]
+(
+	[id]					INT NOT NULL  IDENTITY(1,1) PRIMARY KEY,
+	[cop]					INT NOT NULL,
+	FOREIGN KEY (cop)		REFERENCES Officers (id),
+	[culprit]				INT NOT NULL,
+	FOREIGN KEY (culprit)	REFERENCES Culprit (id),
+	[transgression]			INT NOT NULL,
+	FOREIGN KEY (transgression)	REFERENCES Transgression (id)
+)
+GO;

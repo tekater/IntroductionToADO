@@ -48,9 +48,9 @@ namespace IntroductionToADO
 					break;
 				case 1:
 					{
-                        Console.WriteLine("Введите имя Автора книги:\n");
+                        Console.WriteLine("\nВведите имя Автора книги:");
                         string first_name = Console.ReadLine();
-						Console.WriteLine("Введите Фамилию Автора книги:\n");
+						Console.WriteLine("\nВведите Фамилию Автора книги:");
 						string last_name = Console.ReadLine();
 
 						SqlCommand author_cmd = new SqlCommand($"INSERT INTO Authors (first_name,last_name) VALUES ('{first_name}','{last_name}')", connection);
@@ -60,12 +60,12 @@ namespace IntroductionToADO
 						SqlDataReader author_rdr = author_cmd.ExecuteReader();
 						author_rdr.Read();
 
-                        Console.WriteLine("Введите название книги:\n");
+                        Console.WriteLine("\nВведите название книги:");
 						string book = Console.ReadLine();
-						Console.WriteLine("Введите стоимость книги:\n");
+						Console.WriteLine("\nВведите стоимость книги:n");
 						//int price = Convert.ToInt32(Console.ReadLine());
 						string price = (Console.ReadLine());
-						Console.WriteLine("Введите количество страниц книги:\n");
+						Console.WriteLine("\nВведите количество страниц книги:n");
 						//int pages = Convert.ToInt32(Console.ReadLine());
 						string pages = (Console.ReadLine());
 
