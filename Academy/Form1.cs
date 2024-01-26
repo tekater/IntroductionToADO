@@ -406,7 +406,23 @@ ON
 			{
 				commandLine += $@" WHERE direction_name = '{cbDirectionOnGroupTab.SelectedItem}'";
 			}
-				SelectDataFromTable(dgvGroups, commandLine);
+			SelectDataFromTable(dgvGroups, commandLine);
+			lblGroupsCount.Text = $"Количество элементов: {dgvGroups.Rows.Count - 1}";
+		}
+
+		private void btnGroupsAdd_Click(object sender, EventArgs e)
+		{
+			AddGroup add = new AddGroup();
+
+			LoadDataToComboBox(add.CBDirection, "Directions", "direction_name", "Выберите направление обучения");
+			LoadDataToComboBox(add.CBLearningForm, "LearningForms", "form_name", "Выберите форму обучения");
+			LoadDataToComboBox(add.CBLearningTime, "LearningTimes", "time_name", "Выберите время обучения");
+
+			DialogResult result = add.ShowDialog();
+			if(result == DialogResult.OK)
+			{
+
+			}
 		}
 	}
 }

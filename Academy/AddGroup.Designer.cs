@@ -28,172 +28,102 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.tbSpeciality = new System.Windows.Forms.TextBox();
-			this.tbTime = new System.Windows.Forms.TextBox();
-			this.textBox3 = new System.Windows.Forms.TextBox();
 			this.tbGroupName = new System.Windows.Forms.TextBox();
-			this.gbDaysOfWeek = new System.Windows.Forms.GroupBox();
-			this.cbSunday = new System.Windows.Forms.CheckBox();
-			this.cbSaturday = new System.Windows.Forms.CheckBox();
-			this.cbFriday = new System.Windows.Forms.CheckBox();
-			this.cbThursday = new System.Windows.Forms.CheckBox();
-			this.cbWednesday = new System.Windows.Forms.CheckBox();
-			this.cbTuesday = new System.Windows.Forms.CheckBox();
-			this.cbMonday = new System.Windows.Forms.CheckBox();
-			this.gbDaysOfWeek.SuspendLayout();
+			this.cbDirection = new System.Windows.Forms.ComboBox();
+			this.cbLearningForm = new System.Windows.Forms.ComboBox();
+			this.cbTime = new System.Windows.Forms.ComboBox();
+			this.lcbWeek = new System.Windows.Forms.CheckedListBox();
+			this.btnGenerate = new System.Windows.Forms.Button();
 			this.SuspendLayout();
-			// 
-			// tbSpeciality
-			// 
-			this.tbSpeciality.Location = new System.Drawing.Point(13, 12);
-			this.tbSpeciality.Name = "tbSpeciality";
-			this.tbSpeciality.Size = new System.Drawing.Size(315, 20);
-			this.tbSpeciality.TabIndex = 3;
-			this.tbSpeciality.Text = "Направление обучения";
-			// 
-			// tbTime
-			// 
-			this.tbTime.Location = new System.Drawing.Point(12, 95);
-			this.tbTime.Name = "tbTime";
-			this.tbTime.Size = new System.Drawing.Size(315, 20);
-			this.tbTime.TabIndex = 4;
-			this.tbTime.Text = "Время обучения";
-			// 
-			// textBox3
-			// 
-			this.textBox3.Location = new System.Drawing.Point(12, 52);
-			this.textBox3.Name = "textBox3";
-			this.textBox3.Size = new System.Drawing.Size(316, 20);
-			this.textBox3.TabIndex = 5;
-			this.textBox3.Text = "Форма обучения";
 			// 
 			// tbGroupName
 			// 
-			this.tbGroupName.Location = new System.Drawing.Point(12, 138);
+			this.tbGroupName.Location = new System.Drawing.Point(3, 128);
 			this.tbGroupName.Name = "tbGroupName";
-			this.tbGroupName.Size = new System.Drawing.Size(315, 20);
+			this.tbGroupName.Size = new System.Drawing.Size(326, 20);
 			this.tbGroupName.TabIndex = 6;
 			this.tbGroupName.Text = "Название группы";
 			// 
-			// gbDaysOfWeek
+			// cbDirection
 			// 
-			this.gbDaysOfWeek.Controls.Add(this.cbSunday);
-			this.gbDaysOfWeek.Controls.Add(this.cbSaturday);
-			this.gbDaysOfWeek.Controls.Add(this.cbFriday);
-			this.gbDaysOfWeek.Controls.Add(this.cbThursday);
-			this.gbDaysOfWeek.Controls.Add(this.cbWednesday);
-			this.gbDaysOfWeek.Controls.Add(this.cbTuesday);
-			this.gbDaysOfWeek.Controls.Add(this.cbMonday);
-			this.gbDaysOfWeek.Location = new System.Drawing.Point(12, 175);
-			this.gbDaysOfWeek.Name = "gbDaysOfWeek";
-			this.gbDaysOfWeek.Size = new System.Drawing.Size(314, 47);
-			this.gbDaysOfWeek.TabIndex = 7;
-			this.gbDaysOfWeek.TabStop = false;
-			this.gbDaysOfWeek.Text = "Дни обучения";
+			this.cbDirection.FormattingEnabled = true;
+			this.cbDirection.Location = new System.Drawing.Point(54, 56);
+			this.cbDirection.Name = "cbDirection";
+			this.cbDirection.Size = new System.Drawing.Size(275, 21);
+			this.cbDirection.TabIndex = 8;
+			this.cbDirection.Text = "Направление Обучения";
 			// 
-			// cbSunday
+			// cbLearningForm
 			// 
-			this.cbSunday.AutoSize = true;
-			this.cbSunday.Location = new System.Drawing.Point(276, 19);
-			this.cbSunday.Name = "cbSunday";
-			this.cbSunday.Size = new System.Drawing.Size(39, 17);
-			this.cbSunday.TabIndex = 14;
-			this.cbSunday.Text = "Вс";
-			this.cbSunday.UseVisualStyleBackColor = true;
+			this.cbLearningForm.FormattingEnabled = true;
+			this.cbLearningForm.Location = new System.Drawing.Point(54, 12);
+			this.cbLearningForm.Name = "cbLearningForm";
+			this.cbLearningForm.Size = new System.Drawing.Size(275, 21);
+			this.cbLearningForm.TabIndex = 9;
+			this.cbLearningForm.Text = "Форма Обучения";
 			// 
-			// cbSaturday
+			// cbTime
 			// 
-			this.cbSaturday.AutoSize = true;
-			this.cbSaturday.Location = new System.Drawing.Point(231, 19);
-			this.cbSaturday.Name = "cbSaturday";
-			this.cbSaturday.Size = new System.Drawing.Size(39, 17);
-			this.cbSaturday.TabIndex = 13;
-			this.cbSaturday.Text = "Сб";
-			this.cbSaturday.UseVisualStyleBackColor = true;
+			this.cbTime.FormattingEnabled = true;
+			this.cbTime.Location = new System.Drawing.Point(54, 101);
+			this.cbTime.Name = "cbTime";
+			this.cbTime.Size = new System.Drawing.Size(275, 21);
+			this.cbTime.TabIndex = 10;
+			this.cbTime.Text = "Время Обучения";
 			// 
-			// cbFriday
+			// lcbWeek
 			// 
-			this.cbFriday.AutoSize = true;
-			this.cbFriday.Location = new System.Drawing.Point(186, 19);
-			this.cbFriday.Name = "cbFriday";
-			this.cbFriday.Size = new System.Drawing.Size(39, 17);
-			this.cbFriday.TabIndex = 12;
-			this.cbFriday.Text = "Пт";
-			this.cbFriday.UseVisualStyleBackColor = true;
+			this.lcbWeek.ColumnWidth = 64;
+			this.lcbWeek.FormattingEnabled = true;
+			this.lcbWeek.Items.AddRange(new object[] {
+            "Пн",
+            "Вт",
+            "Ср",
+            "Чт",
+            "Пт",
+            "Сб",
+            "Вс"});
+			this.lcbWeek.Location = new System.Drawing.Point(3, 13);
+			this.lcbWeek.MultiColumn = true;
+			this.lcbWeek.Name = "lcbWeek";
+			this.lcbWeek.Size = new System.Drawing.Size(45, 109);
+			this.lcbWeek.TabIndex = 11;
 			// 
-			// cbThursday
+			// btnGenerate
 			// 
-			this.cbThursday.AutoSize = true;
-			this.cbThursday.Location = new System.Drawing.Point(141, 19);
-			this.cbThursday.Name = "cbThursday";
-			this.cbThursday.Size = new System.Drawing.Size(39, 17);
-			this.cbThursday.TabIndex = 11;
-			this.cbThursday.Text = "Чт";
-			this.cbThursday.UseVisualStyleBackColor = true;
-			// 
-			// cbWednesday
-			// 
-			this.cbWednesday.AutoSize = true;
-			this.cbWednesday.Location = new System.Drawing.Point(96, 19);
-			this.cbWednesday.Name = "cbWednesday";
-			this.cbWednesday.Size = new System.Drawing.Size(39, 17);
-			this.cbWednesday.TabIndex = 10;
-			this.cbWednesday.Text = "Ср";
-			this.cbWednesday.UseVisualStyleBackColor = true;
-			// 
-			// cbTuesday
-			// 
-			this.cbTuesday.AutoSize = true;
-			this.cbTuesday.Location = new System.Drawing.Point(52, 19);
-			this.cbTuesday.Name = "cbTuesday";
-			this.cbTuesday.Size = new System.Drawing.Size(38, 17);
-			this.cbTuesday.TabIndex = 9;
-			this.cbTuesday.Text = "Вт";
-			this.cbTuesday.UseVisualStyleBackColor = true;
-			// 
-			// cbMonday
-			// 
-			this.cbMonday.AutoSize = true;
-			this.cbMonday.Location = new System.Drawing.Point(6, 19);
-			this.cbMonday.Name = "cbMonday";
-			this.cbMonday.Size = new System.Drawing.Size(40, 17);
-			this.cbMonday.TabIndex = 8;
-			this.cbMonday.Text = "Пн";
-			this.cbMonday.UseVisualStyleBackColor = true;
-			this.cbMonday.CheckedChanged += new System.EventHandler(this.cbMonday_CheckedChanged);
+			this.btnGenerate.Location = new System.Drawing.Point(254, 164);
+			this.btnGenerate.Name = "btnGenerate";
+			this.btnGenerate.Size = new System.Drawing.Size(75, 23);
+			this.btnGenerate.TabIndex = 12;
+			this.btnGenerate.Text = "Generate";
+			this.btnGenerate.UseVisualStyleBackColor = true;
+			this.btnGenerate.Click += new System.EventHandler(this.btnGenerate_Click);
 			// 
 			// AddGroup
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(341, 245);
-			this.Controls.Add(this.gbDaysOfWeek);
+			this.ClientSize = new System.Drawing.Size(341, 199);
+			this.Controls.Add(this.btnGenerate);
+			this.Controls.Add(this.lcbWeek);
+			this.Controls.Add(this.cbTime);
+			this.Controls.Add(this.cbLearningForm);
+			this.Controls.Add(this.cbDirection);
 			this.Controls.Add(this.tbGroupName);
-			this.Controls.Add(this.textBox3);
-			this.Controls.Add(this.tbTime);
-			this.Controls.Add(this.tbSpeciality);
 			this.Name = "AddGroup";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "AddGroup";
-			this.gbDaysOfWeek.ResumeLayout(false);
-			this.gbDaysOfWeek.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
 		}
 
 		#endregion
-
-		private System.Windows.Forms.TextBox tbSpeciality;
-		private System.Windows.Forms.TextBox tbTime;
-		private System.Windows.Forms.TextBox textBox3;
 		private System.Windows.Forms.TextBox tbGroupName;
-		private System.Windows.Forms.GroupBox gbDaysOfWeek;
-		private System.Windows.Forms.CheckBox cbSunday;
-		private System.Windows.Forms.CheckBox cbSaturday;
-		private System.Windows.Forms.CheckBox cbFriday;
-		private System.Windows.Forms.CheckBox cbThursday;
-		private System.Windows.Forms.CheckBox cbWednesday;
-		private System.Windows.Forms.CheckBox cbTuesday;
-		private System.Windows.Forms.CheckBox cbMonday;
+		private System.Windows.Forms.ComboBox cbDirection;
+		private System.Windows.Forms.ComboBox cbLearningForm;
+		private System.Windows.Forms.ComboBox cbTime;
+		private System.Windows.Forms.CheckedListBox lcbWeek;
+		private System.Windows.Forms.Button btnGenerate;
 	}
 }
