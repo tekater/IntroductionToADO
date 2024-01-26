@@ -30,7 +30,50 @@ namespace Academy
 			//LoadTablesToComboBox();
 			LoadGroupsToComboBox(cbGroup);
 			SelectStudents();
+			LoadDirectionsToComboBox();
+			rbStudents.Checked = true;
+			LoadDataToComboBox(cbDirectionOnGroupTab, "Directions", "direction_name", "Выберите направление");
 		}
+
+		public void LoadDataToComboBox
+			(
+			System.Windows.Forms.ComboBox comboBox,
+			string sourceTable,
+			string sourceColumn,
+			string invite = "Выберите значение"
+			)
+		{
+			string commandLine = $@"SELECT {sourceColumn} FROM {sourceTable}";
+			SqlCommand cmd = new SqlCommand(commandLine, connection);
+/*
+			SqlCommand cmd = new SqlCommand();
+			cmd.Connection = connection;
+			cmd.Parameters.Add("@table_name", SqlDbType.Structured sourceTable);
+			cmd.Parameters.Add("@column_name", sourceColumn);
+			cmd.CommandText = @"SELECT @column_name FROM @table_name";
+*/
+			connection.Open();
+			reader = cmd.ExecuteReader();
+			comboBox.Items.Add(invite);
+
+			while (reader.Read())
+			{
+				comboBox.Items.Add(reader[0]);
+			}
+
+			reader.Close();
+			connection.Close();
+			comboBox.SelectedItem = invite;           
+		}
+
+		// Случайно сгенерированные ивенты///////////////////////////////////////////////////////////
+		private void Form1_Load(object sender, EventArgs e) { }
+		private void tpStudents_Click(object sender, EventArgs e) { }
+		private void dgvStudents_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
+		private void lblStudCount_Click(object sender, EventArgs e) { }
+		private void label1_Click(object sender, EventArgs e) { }
+		//////////////////////////////////////////////////////////////////////////////////////////////
+
 		void LoadTablesToComboBox()
 		{
 			string commandLine = $@"SELECT table_name FROM information_schema.tables";
@@ -39,7 +82,7 @@ namespace Academy
 			connection.Open();
 			reader = cmd.ExecuteReader();
 
-			while(reader.Read())
+			while (reader.Read())
 			{
 				cbGroup.Items.Add(reader[0]);
 			}
@@ -47,16 +90,7 @@ namespace Academy
 			reader.Close();
 			connection.Close();
 		}
-		private void Form1_Load(object sender, EventArgs e)
-		{
 
-		}
-
-		private void tpStudents_Click(object sender, EventArgs e)
-		{
-
-		}
-		
 		void LoadGroupsToComboBox(System.Windows.Forms.ComboBox combobox)
 		{
 			string commandLine = @"SELECT group_name FROM Groups";
@@ -65,7 +99,7 @@ namespace Academy
 			connection.Open();
 			reader = cmd.ExecuteReader();
 
-			while(reader.Read())
+			while (reader.Read())
 			{
 				//cbGroup.Items.Add(reader[0]);
 				combobox.Items.Add(reader[0]);
@@ -75,9 +109,56 @@ namespace Academy
 			connection.Close();
 		}
 
+		public void SelectDataFromTable
+			(
+			System.Windows.Forms.DataGridView dataGridView,
+			string commandLine
+			//string tableName,
+			//params string[] columns
+			)
+		{
+			/*SqlCommand cmd = new SqlCommand();
+			cmd.Connection = connection;
+			cmd.CommandText = "SELECT ";
+
+			for(int i = 0; i < columns.Length; i++)
+			{
+				cmd.Parameters.Add($"{columns[i]}", columns[i]);
+
+				cmd.CommandText += $"{columns[i]}";
+				cmd.CommandText += i == columns.Length - 1 ? " " : ", ";
+			}
+			cmd.CommandText += $"FROM {tableName}";
+			*/
+			SqlCommand cmd = new SqlCommand(commandLine, connection);
+
+			connection.Open();
+			reader = cmd.ExecuteReader();
+			table = new DataTable();
+
+			for(int i = 0; i <reader.FieldCount; i++)
+			{
+				table.Columns.Add(reader.GetName(i));
+			}
+
+			while(reader.Read())
+			{
+				DataRow row = table.NewRow();
+				for(int i = 0; i < reader.FieldCount;i++)
+				{
+					row[i] = reader[i];
+				}
+				table.Rows.Add(row);
+			}
+			dataGridView.DataSource = table;
+
+			reader.Close();
+			connection.Close();
+		}
+
 		void SelectStudents(string group = "")
 		{
-			string commandLine =	
+			string commandLine =
 				@"
 SELECT 
 	last_name,
@@ -90,7 +171,7 @@ FROM
 ON 
 	[group] = group_id
 				";
-			if(group.Length != 0)
+			if (group.Length != 0)
 			{
 				commandLine += $" WHERE [group_name] = '{group}'";
 			}
@@ -100,15 +181,15 @@ ON
 			reader = cmd.ExecuteReader();
 			table = new DataTable();
 
-			for(int i = 0; i < reader.FieldCount; i++)
+			for (int i = 0; i < reader.FieldCount; i++)
 			{
 				table.Columns.Add(reader.GetName(i));
 			}
 
-			while(reader.Read())
+			while (reader.Read())
 			{
 				DataRow row = table.NewRow();
-				for(int i = 0; i < reader.FieldCount; i++)
+				for (int i = 0; i < reader.FieldCount; i++)
 				{
 					row[i] = reader[i];
 				}
@@ -160,7 +241,7 @@ FROM
 			AddStudent add_student = new AddStudent();
 			LoadGroupsToComboBox(add_student.GroupCombo);
 			DialogResult result = add_student.ShowDialog(this);
-			if(result == DialogResult.OK) 
+			if (result == DialogResult.OK)
 			{
 				SqlCommand cmd = new SqlCommand();
 				cmd.Connection = connection;
@@ -170,7 +251,7 @@ FROM
 				{
 					cmd.Parameters.Add("@middle_name", add_student.FullName.Split(' ')[2]);
 				}
-				cmd.Parameters.Add("@birth_date",add_student.BirthDate.ToString("yyyy-MM-dd"));
+				cmd.Parameters.Add("@birth_date", add_student.BirthDate.ToString("yyyy-MM-dd"));
 				cmd.Parameters.Add("@group", add_student.Group);
 				cmd.CommandText =
 					@"
@@ -194,6 +275,138 @@ END
 				SelectStudents();
 
 			}
+		}
+
+		public void LoadDirectionsToComboBox()
+		{
+			string commandLine = @"SELECT direction_name FROM Directions";
+			SqlCommand cmd = new SqlCommand(commandLine, connection);
+			connection.Open();
+			reader = cmd.ExecuteReader();
+			while (reader.Read())
+			{
+				cbDirections.Items.Add(reader[0]);
+			}
+			reader.Close();
+			connection.Close();
+		}
+
+		private void cbDirections_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			dgvStudents.DataSource = null;
+			SqlCommand cmd = new SqlCommand();
+			cmd.Connection = connection;
+			if (cbDirections.SelectedItem != null)
+			{
+				cmd.Parameters.Add("@direction", cbDirections.SelectedItem);
+			}
+
+			if (rbStudents.Checked)
+			{
+				cmd.CommandText =
+					@"
+SELECT 
+	last_name, firts_name, middle_name, birth_date, group_name, direction_name
+FROM
+	Students 
+JOIN 
+	Groups
+ON
+	Students.[group] = Groups.group_id
+JOIN
+	Directions
+ON
+	Groups.direction = Directions.direction_id
+					";
+				if (cbDirections.SelectedItem != null)
+				{
+					cmd.CommandText +=
+						@"
+ WHERE
+	Directions.direction_name = @direction
+						";
+				}
+			}
+			if (rbGroups.Checked)
+			{
+				cmd.CommandText =
+					@"
+SELECT 
+	group_name, direction_name
+FROM
+	Groups
+JOIN
+	Directions
+ON
+	Groups.direction = Directions.direction_id
+					";
+				if (cbDirections.SelectedItem != null)
+				{
+					cmd.CommandText +=
+						@"
+ WHERE
+	Directions.direction_name = @direction
+						";
+				}
+			}
+			connection.Open();
+
+			reader = cmd.ExecuteReader();
+			table = new DataTable();
+			for (int i = 0; i < reader.FieldCount; i++)
+			{
+				table.Columns.Add(reader.GetName(i));
+			}
+
+			while (reader.Read())
+			{
+				DataRow row = table.NewRow();
+				for (int i = 0; i < reader.FieldCount; i++)
+				{
+					row[i] = reader[i];
+				}
+				table.Rows.Add(row);
+			}
+			dgvStudents.DataSource = table;
+			reader.Close();
+			int studCount = dgvStudents.RowCount - 1;
+			lblStudCount.Text = $"Количество элементов: {studCount}";
+			connection.Close();
+		}
+		private void rbGroups_CheckedChanged(object sender, EventArgs e)
+		{
+			if (rbStudents.Checked)
+			{
+				cbDirections_SelectedIndexChanged(sender, e);
+			}
+		}
+
+		private void rbStudents_CheckedChanged(object sender, EventArgs e)
+		{
+			if (rbGroups.Checked)
+			{
+				cbDirections_SelectedIndexChanged(sender, e);
+			}
+		}
+
+		private void cbDirectionOnGroupTab_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			//SelectDataFromTable(dgvGroups, "Groups", "group_name", "direction");
+			string commandLine =
+				$@"
+SELECT 
+	group_name, direction_name 
+FROM 
+	Groups
+JOIN
+	Directions
+ON
+	Groups.direction = Directions.direction_id";
+			if(cbDirectionOnGroupTab.SelectedIndex != 0)
+			{
+				commandLine += $@" WHERE direction_name = '{cbDirectionOnGroupTab.SelectedItem}'";
+			}
+				SelectDataFromTable(dgvGroups, commandLine);
 		}
 	}
 }
