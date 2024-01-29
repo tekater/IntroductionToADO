@@ -46,6 +46,7 @@
 			this.cbDirectionOnGroupTab = new System.Windows.Forms.ComboBox();
 			this.dgvGroups = new System.Windows.Forms.DataGridView();
 			this.btnGroupsAdd = new System.Windows.Forms.Button();
+			this.tbSearch = new System.Windows.Forms.TextBox();
 			this.tabControl1.SuspendLayout();
 			this.tpStudents.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvStudents)).BeginInit();
@@ -77,6 +78,7 @@
 			// 
 			// tpStudents
 			// 
+			this.tpStudents.Controls.Add(this.tbSearch);
 			this.tpStudents.Controls.Add(this.btnAddGroup);
 			this.tpStudents.Controls.Add(this.rbStudents);
 			this.tpStudents.Controls.Add(this.rbGroups);
@@ -197,7 +199,7 @@
 			this.tpTeachers.Location = new System.Drawing.Point(4, 22);
 			this.tpTeachers.Name = "tpTeachers";
 			this.tpTeachers.Padding = new System.Windows.Forms.Padding(3);
-			this.tpTeachers.Size = new System.Drawing.Size(756, 400);
+			this.tpTeachers.Size = new System.Drawing.Size(788, 504);
 			this.tpTeachers.TabIndex = 1;
 			this.tpTeachers.Text = "Преподаватели";
 			this.tpTeachers.UseVisualStyleBackColor = true;
@@ -256,6 +258,14 @@
 			this.btnGroupsAdd.UseVisualStyleBackColor = true;
 			this.btnGroupsAdd.Click += new System.EventHandler(this.btnGroupsAdd_Click);
 			// 
+			// tbSearch
+			// 
+			this.tbSearch.Location = new System.Drawing.Point(351, 5);
+			this.tbSearch.Name = "tbSearch";
+			this.tbSearch.Size = new System.Drawing.Size(274, 20);
+			this.tbSearch.TabIndex = 10;
+			this.tbSearch.TextChanged += new System.EventHandler(this.tbSearch_TextChanged);
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -296,6 +306,7 @@
 		private System.Windows.Forms.Button btnGroupsAdd;
 		private System.Windows.Forms.ComboBox cbDirectionOnGroupTab;
 		private System.Windows.Forms.Label lblGroupsCount;
+		private System.Windows.Forms.TextBox tbSearch;
 	}
 }
 

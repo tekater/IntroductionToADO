@@ -424,5 +424,55 @@ ON
 
 			}
 		}
+
+		private void tbSearch_TextChanged(object sender, EventArgs e)
+		{
+
+			dgvStudents.DataSource = null;
+			string commandLine =
+				@"
+SELECT 
+	last_name,
+	firts_name,
+	middle_name,
+	birth_date, 
+	group_name			
+FROM 
+	Students JOIN Groups 
+ON 
+	[group] = group_id
+				";
+
+				commandLine += $" WHERE firts_name LIKE '%{tbSearch.SelectedText}%'";
+
+			SelectDataFromTable(dgvStudents, commandLine);/*
+			SqlCommand cmd = new SqlCommand(commandLine, connection);
+
+			connection.Open();
+			reader = cmd.ExecuteReader();
+			table = new DataTable();
+
+			for (int i = 0; i < reader.FieldCount; i++)
+			{
+				table.Columns.Add(reader.GetName(i));
+			}
+
+			while (reader.Read())
+			{
+				DataRow row = table.NewRow();
+				for (int i = 0; i < reader.FieldCount; i++)
+				{
+					row[i] = reader[i];
+				}
+				row["birth_date"] = Convert.ToDateTime(reader["birth_date"]).ToString("dd.MM.yyyy");
+				table.Rows.Add(row);
+			}
+
+			dgvStudents.DataSource = table;
+
+			reader.Close();
+			connection.Close();*/
+
+		}
 	}
 }
