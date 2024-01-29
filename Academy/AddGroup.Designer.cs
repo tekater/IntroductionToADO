@@ -61,6 +61,7 @@
 			this.cbLearningForm.Size = new System.Drawing.Size(275, 21);
 			this.cbLearningForm.TabIndex = 9;
 			this.cbLearningForm.Text = "Форма Обучения";
+			this.cbLearningForm.SelectedIndexChanged += new System.EventHandler(this.cbLearningForm_SelectedIndexChanged);
 			// 
 			// cbTime
 			// 

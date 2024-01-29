@@ -40,10 +40,15 @@ namespace Academy
 			System.Windows.Forms.ComboBox comboBox,
 			string sourceTable,
 			string sourceColumn,
-			string invite = "Выберите значение"
+			string invite = "Выберите значение",
+			string condition = null
 			)
 		{
-			string commandLine = $@"SELECT {sourceColumn} FROM {sourceTable}";
+			string commandLine = $@"SELECT {sourceColumn} FROM {sourceTable} ";
+			if(condition != null)
+			{
+				commandLine += condition;
+			}
 			SqlCommand cmd = new SqlCommand(commandLine, connection);
 /*
 			SqlCommand cmd = new SqlCommand();
@@ -109,11 +114,30 @@ namespace Academy
 			connection.Close();
 		}
 
+		public void LoadDataFromStorageToComboBox
+			(
+			System.Windows.Forms.ComboBox comboBox,
+			string table_name,
+			string column_name,
+			string invite = "Выберите значение",
+			string condition = null
+			)
+		{
+			TableStorage storage = new TableStorage();
+			storage.GetDataFromBase(table_name,column_name,condition);
+			DataRow[] rows = storage.Set.Tables[0].Select();
+
+			for(int i = 0; i < rows.Length;i++)
+			{
+				comboBox.Items.Add(rows[i][column_name]);
+			}
+		}
+
 		public void SelectDataFromTable
 			(
 			System.Windows.Forms.DataGridView dataGridView,
 			string commandLine
-			//string tableName,
+			//string table_name,
 			//params string[] columns
 			)
 		{
@@ -128,7 +152,7 @@ namespace Academy
 				cmd.CommandText += $"{columns[i]}";
 				cmd.CommandText += i == columns.Length - 1 ? " " : ", ";
 			}
-			cmd.CommandText += $"FROM {tableName}";
+			cmd.CommandText += $"FROM {table_name}";
 			*/
 			SqlCommand cmd = new SqlCommand(commandLine, connection);
 
@@ -412,11 +436,11 @@ ON
 
 		private void btnGroupsAdd_Click(object sender, EventArgs e)
 		{
-			AddGroup add = new AddGroup();
+			AddGroup add = new AddGroup(this);
 
-			LoadDataToComboBox(add.CBDirection, "Directions", "direction_name", "Выберите направление обучения");
-			LoadDataToComboBox(add.CBLearningForm, "LearningForms", "form_name", "Выберите форму обучения");
-			LoadDataToComboBox(add.CBLearningTime, "LearningTimes", "time_name", "Выберите время обучения");
+			//LoadDataToComboBox(add.CBDirection, "Directions", "direction_name", "Выберите направление обучения");
+			//LoadDataToComboBox(add.CBLearningForm, "LearningForms", "form_name", "Выберите форму обучения");
+			//LoadDataToComboBox(add.CBLearningTime, "LearningTimes", "time_name", "Выберите время обучения");
 
 			DialogResult result = add.ShowDialog();
 			if(result == DialogResult.OK)
@@ -445,7 +469,9 @@ ON
 
 				commandLine += $" WHERE firts_name LIKE '%{tbSearch.SelectedText}%'";
 
-			SelectDataFromTable(dgvStudents, commandLine);/*
+			SelectDataFromTable(dgvStudents, commandLine);
+
+			/*
 			SqlCommand cmd = new SqlCommand(commandLine, connection);
 
 			connection.Open();
