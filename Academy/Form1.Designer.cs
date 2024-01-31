@@ -31,6 +31,7 @@
 			this.cbGroup = new System.Windows.Forms.ComboBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tpStudents = new System.Windows.Forms.TabPage();
+			this.tbSearch = new System.Windows.Forms.TextBox();
 			this.btnAddGroup = new System.Windows.Forms.Button();
 			this.rbStudents = new System.Windows.Forms.RadioButton();
 			this.rbGroups = new System.Windows.Forms.RadioButton();
@@ -46,7 +47,6 @@
 			this.cbDirectionOnGroupTab = new System.Windows.Forms.ComboBox();
 			this.dgvGroups = new System.Windows.Forms.DataGridView();
 			this.btnGroupsAdd = new System.Windows.Forms.Button();
-			this.tbSearch = new System.Windows.Forms.TextBox();
 			this.tabControl1.SuspendLayout();
 			this.tpStudents.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvStudents)).BeginInit();
@@ -68,8 +68,8 @@
 			this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.tabControl1.Controls.Add(this.tpStudents);
-			this.tabControl1.Controls.Add(this.tpTeachers);
 			this.tabControl1.Controls.Add(this.tabPageGroups);
+			this.tabControl1.Controls.Add(this.tpTeachers);
 			this.tabControl1.Location = new System.Drawing.Point(12, 12);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
@@ -97,6 +97,14 @@
 			this.tpStudents.Text = "Студенты";
 			this.tpStudents.UseVisualStyleBackColor = true;
 			this.tpStudents.Click += new System.EventHandler(this.tpStudents_Click);
+			// 
+			// tbSearch
+			// 
+			this.tbSearch.Location = new System.Drawing.Point(351, 5);
+			this.tbSearch.Name = "tbSearch";
+			this.tbSearch.Size = new System.Drawing.Size(274, 20);
+			this.tbSearch.TabIndex = 10;
+			this.tbSearch.TextChanged += new System.EventHandler(this.tbSearch_TextChanged);
 			// 
 			// btnAddGroup
 			// 
@@ -257,14 +265,6 @@
 			this.btnGroupsAdd.Text = "Добавить Группу";
 			this.btnGroupsAdd.UseVisualStyleBackColor = true;
 			this.btnGroupsAdd.Click += new System.EventHandler(this.btnGroupsAdd_Click);
-			// 
-			// tbSearch
-			// 
-			this.tbSearch.Location = new System.Drawing.Point(351, 5);
-			this.tbSearch.Name = "tbSearch";
-			this.tbSearch.Size = new System.Drawing.Size(274, 20);
-			this.tbSearch.TabIndex = 10;
-			this.tbSearch.TextChanged += new System.EventHandler(this.tbSearch_TextChanged);
 			// 
 			// Form1
 			// 
