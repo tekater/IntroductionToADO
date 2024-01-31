@@ -451,7 +451,7 @@ ON
 
 		private void tbSearch_TextChanged(object sender, EventArgs e)
 		{
-
+			string name = tbSearch.Text;
 			dgvStudents.DataSource = null;
 			string commandLine =
 				@"
@@ -467,9 +467,33 @@ ON
 	[group] = group_id
 				";
 
-				commandLine += $" WHERE firts_name LIKE '%{tbSearch.SelectedText}%'";
+				commandLine += $" WHERE CONCAT(last_name, ' ', firts_name, ' ', middle_name) LIKE @name";
 
-			SelectDataFromTable(dgvStudents, commandLine);
+			SqlCommand cmd = new SqlCommand(commandLine, connection);
+			cmd.Parameters.AddWithValue("@name", $"%{name}%");
+			connection.Open();
+			reader = cmd.ExecuteReader();
+
+			table = new DataTable();
+			for (int i = 0; i < reader.FieldCount; i++)
+			{
+				table.Columns.Add(reader.GetName(i));
+			}
+
+			while (reader.Read())
+			{
+				DataRow row = table.NewRow();
+				for (int i = 0; i < reader.FieldCount; i++) row[i] = reader[i];
+				table.Rows.Add(row);
+			}
+			dgvStudents.DataSource = table;
+
+			reader.Close();
+			connection.Close();
+
+
+			//SelectDataFromTable(dgvStudents, commandLine);
+
 
 			/*
 			SqlCommand cmd = new SqlCommand(commandLine, connection);
