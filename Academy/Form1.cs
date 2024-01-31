@@ -74,7 +74,7 @@ namespace Academy
 		// Случайно сгенерированные ивенты///////////////////////////////////////////////////////////
 		private void Form1_Load(object sender, EventArgs e) { }
 		private void tpStudents_Click(object sender, EventArgs e) { }
-		private void dgvStudents_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
+	
 		private void lblStudCount_Click(object sender, EventArgs e) { }
 		private void label1_Click(object sender, EventArgs e) { }
 		//////////////////////////////////////////////////////////////////////////////////////////////
@@ -471,10 +471,11 @@ ON
 
 			SqlCommand cmd = new SqlCommand(commandLine, connection);
 			cmd.Parameters.AddWithValue("@name", $"%{name}%");
+
 			connection.Open();
 			reader = cmd.ExecuteReader();
-
 			table = new DataTable();
+
 			for (int i = 0; i < reader.FieldCount; i++)
 			{
 				table.Columns.Add(reader.GetName(i));
@@ -491,9 +492,7 @@ ON
 			reader.Close();
 			connection.Close();
 
-
 			//SelectDataFromTable(dgvStudents, commandLine);
-
 
 			/*
 			SqlCommand cmd = new SqlCommand(commandLine, connection);
@@ -523,6 +522,16 @@ ON
 			reader.Close();
 			connection.Close();*/
 
+		}
+		private void dgvStudents_CellContentClick(object sender, DataGridViewCellEventArgs e)
+		{
+			string collumName = dgvStudents.Columns[e.ColumnIndex].Name;
+			if (collumName == "last_name")
+			{
+				string cellName = dgvStudents.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+				StudentInfo studentInfo = new StudentInfo(cellName);
+				studentInfo.ShowDialog();
+			}
 		}
 	}
 }
