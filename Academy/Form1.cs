@@ -445,7 +445,11 @@ ON
 			DialogResult result = add.ShowDialog();
 			if(result == DialogResult.OK)
 			{
-
+				/*
+				TableStorage storage = new TableStorage();
+				storage.GetDataFromBase("Groups, Directions", "group_name, direction_name");
+				*/
+				cbDirectionOnGroupTab_SelectedIndexChanged(sender, e);
 			}
 		}
 
