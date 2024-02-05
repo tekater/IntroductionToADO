@@ -419,13 +419,24 @@ ON
 			string commandLine =
 				$@"
 SELECT 
-	group_name, direction_name 
+	[Группа] = group_name, 
+	[Специальность] = direction_name,
+	[Время] = time_name,
+	[Дни обучения] =	IIF(dbo.Groups.learning_days = 21,	'Пн Ср Пт',
+						IIF(dbo.Groups.learning_days = 10,	'Вт Чт',
+						IIF(dbo.Groups.learning_days = 96,	'Сб Вс',	
+						IIF(dbo.Groups.learning_days = 8,	'Чт',	'Ошибка'))))
 FROM 
 	Groups
 JOIN
 	Directions
 ON
-	Groups.direction = Directions.direction_id";
+	Groups.direction = Directions.direction_id
+JOIN
+	LearningTimes
+ON
+	Groups.learning_time = LearningTimes.time_id
+				";
 			if(cbDirectionOnGroupTab.SelectedIndex != 0)
 			{
 				commandLine += $@" WHERE direction_name = '{cbDirectionOnGroupTab.SelectedItem}'";
@@ -536,6 +547,14 @@ ON
 				StudentInfo studentInfo = new StudentInfo(cellName);
 				studentInfo.ShowDialog();
 			}
+		}
+
+		private void btnDelete_Click(object sender, EventArgs e)
+		{
+			TableStorage storage = new TableStorage();
+			storage.GetDataFromBase("Groups, Directions", "group_name, direction_name", "direction = direction_id");
+			dgvGroups.DataSource = storage.Set.Tables[0];
+			storage.Adapter.Update(storage.Set);
 		}
 	}
 }
