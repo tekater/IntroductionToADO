@@ -253,10 +253,14 @@
 			this.dgvGroups.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
 			this.dgvGroups.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			this.dgvGroups.Location = new System.Drawing.Point(9, 35);
+			this.dgvGroups.MultiSelect = false;
 			this.dgvGroups.Name = "dgvGroups";
+			this.dgvGroups.ReadOnly = true;
 			this.dgvGroups.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+			this.dgvGroups.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
 			this.dgvGroups.Size = new System.Drawing.Size(849, 463);
 			this.dgvGroups.TabIndex = 11;
+			this.dgvGroups.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvGroups_CellDoubleClick);
 			// 
 			// btnGroupsAdd
 			// 

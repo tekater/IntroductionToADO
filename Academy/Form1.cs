@@ -402,10 +402,10 @@ ON
 
 		private void cbDirectionOnGroupTab_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			string commandLine =
+			/*string commandLine =
 				$@"
 SELECT 
-	[Группа] = group_name, 
+	group_name, 
 	[Специальность] = direction_name,
 	[Время] = time_name,
 	learning_days
@@ -419,7 +419,38 @@ JOIN
 	LearningTimes
 ON
 	Groups.learning_time = LearningTimes.time_id
+				";*/
+			string condition = " ";
+			if(cbDirectionOnGroupTab.SelectedIndex != 0)
+			{
+				condition += $@"WHERE direction_name = '{cbDirectionOnGroupTab.SelectedItem}'";
+			}
+			string commandLine =
+				$@"
+SELECT 
+	group_name, 
+	[learning_time] = IIF(learning_time = 1,'Утро','а')
+	learning_days,
+	direction_name, 
+	[number_of_students] = COUNT(stud_id)
+FROM 
+	Groups 
+JOIN 
+	Directions 
+ON 
+	direction=direction_id
+LEFT JOIN 
+	Students 
+ON 
+	[group] = [group_id] 
+{condition}
+GROUP BY 
+	[group_name], 
+	[learning_days],
+	[learning_time],
+	[direction_name]
 				";
+
 			/*
 			 string commandLine =
 				$@"
@@ -443,10 +474,20 @@ ON
 	Groups.learning_time = LearningTimes.time_id
 				";
 			 */
-			if (cbDirectionOnGroupTab.SelectedIndex != 0)
+			/*if (cbDirectionOnGroupTab.SelectedIndex != 0)
 			{
 				commandLine += $@" WHERE direction_name = '{cbDirectionOnGroupTab.SelectedItem}'";
-			}
+			}*/
+
+			/*
+			 commandLine += " " + 
+				$@"
+GROUP BY 
+	[group_name], 
+	[learning_days], 
+	[direction_name]
+				";
+			*/
 			SelectDataFromTable(dgvGroups, commandLine);
 			lblGroupsCount.Text = $"Количество элементов: {dgvGroups.Rows.Count - 1}";
 		}
@@ -538,14 +579,31 @@ ON
 
 		private void btnDelete_Click(object sender, EventArgs e)
 		{
-			TableStorage storage = new TableStorage();
-			storage.GetDataFromBase("Groups, Directions", "group_name, direction_name", "direction = direction_id");
-			dgvGroups.DataSource = storage.Set.Tables[0];
-			foreach(DataGridViewCell cell in dgvGroups.SelectedCells)
+			//TableStorage storage = new TableStorage();
+			//storage.GetDataFromBase("Groups, Directions", "group_name, direction_name", "direction = direction_id");
+			//dgvGroups.DataSource = storage.Set.Tables[0];
+			/*foreach(DataGridViewCell cell in dgvGroups.SelectedCells)
 			{
 				dgvGroups.Rows.RemoveAt(cell.RowIndex);
-			}
-			storage.Adapter.Update(storage.Set);
+			}*/
+			//storage.Adapter.Update(storage.Set);
+
+
+			TableStorage storage = new TableStorage();
+			storage.GetDataFromBase("Groups");
+
+			MessageBox.Show
+				(
+				this, 
+				dgvGroups.SelectedRows[0].Cells["group_name"].Value.ToString(), 
+				"Info"
+				);
+
+			DataRow[] rows = storage.Set.Tables["Groups"].Select($"group_name = '{dgvGroups.SelectedRows[0].Cells["group_name"].Value.ToString()}'");
+			rows[0].Delete();
+
+			storage.Adapter.Update(storage.Set, "Groups");
+			cbDirectionOnGroupTab_SelectedIndexChanged(sender, e);
 		}
 
 		private string BitSetToDays(byte bitset)
@@ -563,6 +621,22 @@ ON
 				}
 			}
 			return days;
+		}
+
+		private void dgvGroups_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+		{
+			TableStorage storage = new TableStorage();
+			storage.GetDataFromBase("Groups");
+			DataRow[] rows = storage.Set.Tables["Groups"].Select($"group_name = '{dgvGroups.SelectedRows[0].Cells["group_name"].Value.ToString()}'");
+			AddGroup addGroup = new AddGroup
+				(
+				this,
+								rows[0]["group_name"].ToString(),
+				Convert.ToByte(	rows[0]["direction"]),
+				Convert.ToByte(	rows[0]["learning_time"] == null ? 0 : rows[0]["learning_time"]),
+				Convert.ToByte(	rows[0]["learning_days"] == null ? 0 : rows[0]["learning_days"])
+				);
+			addGroup.Show();
 		}
 	}
 }
