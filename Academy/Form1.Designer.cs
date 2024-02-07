@@ -42,12 +42,12 @@
 			this.btnAdd = new System.Windows.Forms.Button();
 			this.dgvStudents = new System.Windows.Forms.DataGridView();
 			this.tabPageGroups = new System.Windows.Forms.TabPage();
+			this.btnDelete = new System.Windows.Forms.Button();
 			this.lblGroupsCount = new System.Windows.Forms.Label();
 			this.cbDirectionOnGroupTab = new System.Windows.Forms.ComboBox();
 			this.dgvGroups = new System.Windows.Forms.DataGridView();
 			this.btnGroupsAdd = new System.Windows.Forms.Button();
 			this.tpTeachers = new System.Windows.Forms.TabPage();
-			this.btnDelete = new System.Windows.Forms.Button();
 			this.tabControl1.SuspendLayout();
 			this.tpStudents.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvStudents)).BeginInit();
@@ -58,9 +58,9 @@
 			// cbGroup
 			// 
 			this.cbGroup.FormattingEnabled = true;
-			this.cbGroup.Location = new System.Drawing.Point(92, 6);
+			this.cbGroup.Location = new System.Drawing.Point(92, 5);
 			this.cbGroup.Name = "cbGroup";
-			this.cbGroup.Size = new System.Drawing.Size(241, 21);
+			this.cbGroup.Size = new System.Drawing.Size(306, 21);
 			this.cbGroup.TabIndex = 0;
 			this.cbGroup.SelectedIndexChanged += new System.EventHandler(this.cbGroups_SelectedIndexChanged);
 			// 
@@ -74,7 +74,7 @@
 			this.tabControl1.Location = new System.Drawing.Point(12, 12);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(796, 530);
+			this.tabControl1.Size = new System.Drawing.Size(872, 530);
 			this.tabControl1.TabIndex = 1;
 			// 
 			// tpStudents
@@ -93,7 +93,7 @@
 			this.tpStudents.Location = new System.Drawing.Point(4, 22);
 			this.tpStudents.Name = "tpStudents";
 			this.tpStudents.Padding = new System.Windows.Forms.Padding(3);
-			this.tpStudents.Size = new System.Drawing.Size(788, 504);
+			this.tpStudents.Size = new System.Drawing.Size(864, 504);
 			this.tpStudents.TabIndex = 0;
 			this.tpStudents.Text = "Студенты";
 			this.tpStudents.UseVisualStyleBackColor = true;
@@ -101,18 +101,18 @@
 			// 
 			// tbSearch
 			// 
-			this.tbSearch.Location = new System.Drawing.Point(351, 5);
+			this.tbSearch.Location = new System.Drawing.Point(404, 4);
 			this.tbSearch.Name = "tbSearch";
-			this.tbSearch.Size = new System.Drawing.Size(274, 20);
+			this.tbSearch.Size = new System.Drawing.Size(306, 20);
 			this.tbSearch.TabIndex = 10;
 			this.tbSearch.TextChanged += new System.EventHandler(this.tbSearch_TextChanged);
 			// 
 			// btnAddGroup
 			// 
 			this.btnAddGroup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnAddGroup.Location = new System.Drawing.Point(677, 35);
+			this.btnAddGroup.Location = new System.Drawing.Point(734, 33);
 			this.btnAddGroup.Name = "btnAddGroup";
-			this.btnAddGroup.Size = new System.Drawing.Size(105, 23);
+			this.btnAddGroup.Size = new System.Drawing.Size(124, 23);
 			this.btnAddGroup.TabIndex = 9;
 			this.btnAddGroup.Text = "Добавить Группу";
 			this.btnAddGroup.UseVisualStyleBackColor = true;
@@ -167,7 +167,7 @@
 			this.cbDirections.FormattingEnabled = true;
 			this.cbDirections.Location = new System.Drawing.Point(92, 30);
 			this.cbDirections.Name = "cbDirections";
-			this.cbDirections.Size = new System.Drawing.Size(241, 21);
+			this.cbDirections.Size = new System.Drawing.Size(306, 21);
 			this.cbDirections.TabIndex = 4;
 			this.cbDirections.SelectedIndexChanged += new System.EventHandler(this.cbDirections_SelectedIndexChanged);
 			// 
@@ -184,9 +184,9 @@
 			// btnAdd
 			// 
 			this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnAdd.Location = new System.Drawing.Point(677, 6);
+			this.btnAdd.Location = new System.Drawing.Point(734, 4);
 			this.btnAdd.Name = "btnAdd";
-			this.btnAdd.Size = new System.Drawing.Size(105, 23);
+			this.btnAdd.Size = new System.Drawing.Size(124, 23);
 			this.btnAdd.TabIndex = 2;
 			this.btnAdd.Text = "Добавить";
 			this.btnAdd.UseVisualStyleBackColor = true;
@@ -199,7 +199,7 @@
 			this.dgvStudents.Location = new System.Drawing.Point(9, 82);
 			this.dgvStudents.Name = "dgvStudents";
 			this.dgvStudents.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-			this.dgvStudents.Size = new System.Drawing.Size(773, 416);
+			this.dgvStudents.Size = new System.Drawing.Size(849, 416);
 			this.dgvStudents.TabIndex = 1;
 			this.dgvStudents.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStudents_CellContentClick);
 			// 
@@ -214,9 +214,20 @@
 			this.tabPageGroups.Location = new System.Drawing.Point(4, 22);
 			this.tabPageGroups.Name = "tabPageGroups";
 			this.tabPageGroups.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPageGroups.Size = new System.Drawing.Size(788, 504);
+			this.tabPageGroups.Size = new System.Drawing.Size(864, 504);
 			this.tabPageGroups.TabIndex = 2;
 			this.tabPageGroups.Text = "Группы";
+			// 
+			// btnDelete
+			// 
+			this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnDelete.Location = new System.Drawing.Point(756, 7);
+			this.btnDelete.Name = "btnDelete";
+			this.btnDelete.Size = new System.Drawing.Size(105, 23);
+			this.btnDelete.TabIndex = 14;
+			this.btnDelete.Text = "Удалить Группу";
+			this.btnDelete.UseVisualStyleBackColor = true;
+			this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
 			// 
 			// lblGroupsCount
 			// 
@@ -244,13 +255,13 @@
 			this.dgvGroups.Location = new System.Drawing.Point(9, 35);
 			this.dgvGroups.Name = "dgvGroups";
 			this.dgvGroups.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-			this.dgvGroups.Size = new System.Drawing.Size(785, 463);
+			this.dgvGroups.Size = new System.Drawing.Size(849, 463);
 			this.dgvGroups.TabIndex = 11;
 			// 
 			// btnGroupsAdd
 			// 
 			this.btnGroupsAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnGroupsAdd.Location = new System.Drawing.Point(569, 7);
+			this.btnGroupsAdd.Location = new System.Drawing.Point(645, 7);
 			this.btnGroupsAdd.Name = "btnGroupsAdd";
 			this.btnGroupsAdd.Size = new System.Drawing.Size(105, 23);
 			this.btnGroupsAdd.TabIndex = 10;
@@ -263,27 +274,16 @@
 			this.tpTeachers.Location = new System.Drawing.Point(4, 22);
 			this.tpTeachers.Name = "tpTeachers";
 			this.tpTeachers.Padding = new System.Windows.Forms.Padding(3);
-			this.tpTeachers.Size = new System.Drawing.Size(788, 504);
+			this.tpTeachers.Size = new System.Drawing.Size(864, 504);
 			this.tpTeachers.TabIndex = 1;
 			this.tpTeachers.Text = "Преподаватели";
 			this.tpTeachers.UseVisualStyleBackColor = true;
-			// 
-			// btnDelete
-			// 
-			this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnDelete.Location = new System.Drawing.Point(680, 7);
-			this.btnDelete.Name = "btnDelete";
-			this.btnDelete.Size = new System.Drawing.Size(105, 23);
-			this.btnDelete.TabIndex = 14;
-			this.btnDelete.Text = "Удалить Группу";
-			this.btnDelete.UseVisualStyleBackColor = true;
-			this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
 			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(820, 554);
+			this.ClientSize = new System.Drawing.Size(896, 554);
 			this.Controls.Add(this.tabControl1);
 			this.Name = "Form1";
 			this.Text = "Form1";

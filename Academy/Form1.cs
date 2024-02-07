@@ -50,13 +50,7 @@ namespace Academy
 				commandLine += condition;
 			}
 			SqlCommand cmd = new SqlCommand(commandLine, connection);
-/*
-			SqlCommand cmd = new SqlCommand();
-			cmd.Connection = connection;
-			cmd.Parameters.Add("@table_name", SqlDbType.Structured sourceTable);
-			cmd.Parameters.Add("@column_name", sourceColumn);
-			cmd.CommandText = @"SELECT @column_name FROM @table_name";
-*/
+
 			connection.Open();
 			reader = cmd.ExecuteReader();
 			comboBox.Items.Add(invite);
@@ -106,7 +100,6 @@ namespace Academy
 
 			while (reader.Read())
 			{
-				//cbGroup.Items.Add(reader[0]);
 				combobox.Items.Add(reader[0]);
 			}
 
@@ -137,23 +130,8 @@ namespace Academy
 			(
 			System.Windows.Forms.DataGridView dataGridView,
 			string commandLine
-			//string table_name,
-			//params string[] columns
 			)
 		{
-			/*SqlCommand cmd = new SqlCommand();
-			cmd.Connection = connection;
-			cmd.CommandText = "SELECT ";
-
-			for(int i = 0; i < columns.Length; i++)
-			{
-				cmd.Parameters.Add($"{columns[i]}", columns[i]);
-
-				cmd.CommandText += $"{columns[i]}";
-				cmd.CommandText += i == columns.Length - 1 ? " " : ", ";
-			}
-			cmd.CommandText += $"FROM {table_name}";
-			*/
 			SqlCommand cmd = new SqlCommand(commandLine, connection);
 
 			connection.Open();
@@ -171,6 +149,15 @@ namespace Academy
 				for(int i = 0; i < reader.FieldCount;i++)
 				{
 					row[i] = reader[i];
+				}
+
+				try
+				{
+					row["learning_days"] = BitSetToDays(Convert.ToByte(row["learning_days"]));
+				}
+				catch(Exception e)
+				{
+
 				}
 				table.Rows.Add(row);
 			}
@@ -415,8 +402,26 @@ ON
 
 		private void cbDirectionOnGroupTab_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			//SelectDataFromTable(dgvGroups, "Groups", "group_name", "direction");
 			string commandLine =
+				$@"
+SELECT 
+	[Группа] = group_name, 
+	[Специальность] = direction_name,
+	[Время] = time_name,
+	learning_days
+FROM 
+	Groups
+JOIN
+	Directions
+ON
+	Groups.direction = Directions.direction_id
+JOIN
+	LearningTimes
+ON
+	Groups.learning_time = LearningTimes.time_id
+				";
+			/*
+			 string commandLine =
 				$@"
 SELECT 
 	[Группа] = group_name, 
@@ -437,7 +442,8 @@ JOIN
 ON
 	Groups.learning_time = LearningTimes.time_id
 				";
-			if(cbDirectionOnGroupTab.SelectedIndex != 0)
+			 */
+			if (cbDirectionOnGroupTab.SelectedIndex != 0)
 			{
 				commandLine += $@" WHERE direction_name = '{cbDirectionOnGroupTab.SelectedItem}'";
 			}
@@ -445,6 +451,7 @@ ON
 			lblGroupsCount.Text = $"Количество элементов: {dgvGroups.Rows.Count - 1}";
 		}
 
+		/*
 		private void btnGroupsAdd_Click(object sender, EventArgs e)
 		{
 			AddGroup add = new AddGroup(this);
@@ -456,15 +463,24 @@ ON
 			DialogResult result = add.ShowDialog();
 			if(result == DialogResult.OK)
 			{
-				/*
 				TableStorage storage = new TableStorage();
 				storage.GetDataFromBase("Groups, Directions", "group_name, direction_name");
-				*/
 				cbDirectionOnGroupTab_SelectedIndexChanged(sender, e);
 			}
+			cbDirectionOnGroupTab_SelectedIndexChanged(sender, e);
+			TableStorage storage;
+			storage.GetDataFromBase("Groups,Directions");
+			
+		}*/
+	
+		private void btnGroupsAdd_Click(object sender, EventArgs e)
+		{
+			AddGroup add = new AddGroup(this);
+			DialogResult result = add.ShowDialog();
+			cbDirectionOnGroupTab_SelectedIndexChanged(sender, e);
 		}
 
-		private void tbSearch_TextChanged(object sender, EventArgs e)
+			private void tbSearch_TextChanged(object sender, EventArgs e)
 		{
 			string name = tbSearch.Text;
 			dgvStudents.DataSource = null;
@@ -477,7 +493,9 @@ SELECT
 	birth_date, 
 	group_name			
 FROM 
-	Students JOIN Groups 
+	Students 
+JOIN
+	Groups 
 ON 
 	[group] = group_id
 				";
@@ -506,37 +524,6 @@ ON
 
 			reader.Close();
 			connection.Close();
-
-			//SelectDataFromTable(dgvStudents, commandLine);
-
-			/*
-			SqlCommand cmd = new SqlCommand(commandLine, connection);
-
-			connection.Open();
-			reader = cmd.ExecuteReader();
-			table = new DataTable();
-
-			for (int i = 0; i < reader.FieldCount; i++)
-			{
-				table.Columns.Add(reader.GetName(i));
-			}
-
-			while (reader.Read())
-			{
-				DataRow row = table.NewRow();
-				for (int i = 0; i < reader.FieldCount; i++)
-				{
-					row[i] = reader[i];
-				}
-				row["birth_date"] = Convert.ToDateTime(reader["birth_date"]).ToString("dd.MM.yyyy");
-				table.Rows.Add(row);
-			}
-
-			dgvStudents.DataSource = table;
-
-			reader.Close();
-			connection.Close();*/
-
 		}
 		private void dgvStudents_CellContentClick(object sender, DataGridViewCellEventArgs e)
 		{
@@ -554,7 +541,28 @@ ON
 			TableStorage storage = new TableStorage();
 			storage.GetDataFromBase("Groups, Directions", "group_name, direction_name", "direction = direction_id");
 			dgvGroups.DataSource = storage.Set.Tables[0];
+			foreach(DataGridViewCell cell in dgvGroups.SelectedCells)
+			{
+				dgvGroups.Rows.RemoveAt(cell.RowIndex);
+			}
 			storage.Adapter.Update(storage.Set);
+		}
+
+		private string BitSetToDays(byte bitset)
+		{
+			string[] week = { "Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс" };
+			string days = "";
+			for(int i = 0; i < week.Length;i++)
+			{
+				byte day = 1;
+				day <<= i;
+				if ((day & bitset) != 0)
+				{
+					int day_index = (int)Math.Log(day & bitset, 2);
+					days += week[day_index] + " ";
+				}
+			}
+			return days;
 		}
 	}
 }

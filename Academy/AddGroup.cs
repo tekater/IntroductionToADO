@@ -128,18 +128,6 @@ namespace Academy
 
 		string GenerateGroupName()
 		{
-			/*if(CBLearningForm.SelectedIndex== 0)
-			{
-				return "Выберите форму обучения";
-			}
-			if (cbDirection.SelectedItem == null)
-			{
-				return "Выберите направление обучения";
-			}
-			if (cbTime.SelectedIndex == 0)
-			{
-				return "Выберите время обучения";
-			}*/
 			if(!AllCombosOK())
 			{
 				return "Что-то пошло не так";
@@ -148,23 +136,12 @@ namespace Academy
 			if(CBLearningForm.SelectedItem.ToString() != "Годичные курсы")
 			{
 				if(cbLearningForm.SelectedItem.ToString() == "Полустационар")
-					group_name += lcbWeek.SelectedItem.ToString();
+					group_name += lcbWeek.SelectedItem.ToString() == "Сб" ? "S" : "V";
 				{
-			/*if(CBLearningForm.SelectedItem.ToString() == "Стационар")
-			{
-				if(cbDirection.SelectedItem.ToString() == "Разработка программного обеспечения")
-				{*/
-					//DataRow[] rows = set.Tables["Directions"].Select("direction_name = 'Разработка программного обеспечения'");
-					//DataRow row = rows[0];
-					//group_name += row["direction_code_name"];
 					group_name += 
 						set.Tables["Directions"].Select($"direction_name = '{CBDirection.SelectedItem.ToString()}'")[0]["direction_code_name"].ToString().Trim();
-					//group_name = group_name.Trim();
-					//DataRow row = set.Tables["LearningTimes"].Select($"time_name = '{CBLearningTime.SelectedItem.ToString()}'")[0];
-					//group_name += row["time_code_name"];
 					group_name += 
 						set.Tables["LearningTimes"].Select($"time_name = '{CBLearningTime.SelectedItem.ToString()}'")[0]["time_code_name"].ToString().Trim();
-					//group_name = group_name.Trim();
 				}
 			}
 			group_name += "_";
@@ -178,22 +155,7 @@ namespace Academy
 
 		private void cbLearningForm_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			/*mainForm.LoadDataToComboBox
-				(
-				cbDirection,
-				"Directions, LearningForms, LearningFormsDirectionsRelation", 
-				"direction_name", 
-				"Выберите форму обучения", 
-				$@"
-WHERE 
-	LearningFormsDirectionsRelation.learning_form = LearningForms.form_id
-AND
-	LearningFormsDirectionsRelation.direction = Directions.direction_id
-AND
-	form_name = {cbLearningForm.SelectedItem.ToString()}
-	"
-				);*/
-			cbDirection.Items.Clear();
+			/*cbDirection.Items.Clear();
 			if (cbLearningForm.SelectedIndex != 0) { 
 			mainForm.LoadDataFromStorageToComboBox
 				(
@@ -210,6 +172,41 @@ AND
 	form_name = '{cbLearningForm.SelectedItem.ToString()}'
 	"
 				);
+			}*/
+			int selectedIndexInDirection = cbDirection.SelectedIndex;
+			string directionName = cbDirection.SelectedItem?.ToString();
+
+			cbDirection.Items.Clear();
+			if (cbLearningForm.SelectedIndex != 0)
+				mainForm.LoadDataFromStorageToComboBox
+								(
+								cbDirection,
+								"Directions, LearningForms, LearningFormsDirectionsRelation",
+								"direction_name",
+								"Выберите форму обучения",
+								$@"
+		LearningFormsDirectionsRelation.learning_form	= LearningForms.form_id
+AND		LearningFormsDirectionsRelation.direction		= Directions.direction_id
+AND		form_name = '{cbLearningForm.SelectedItem.ToString()}'
+"
+								);
+			//cbDirection.SelectedIndex = selectedIndexInDirection < cbDirection.Items.Count ? selectedIndexInDirection : -1;
+			bool badDirection = false;
+			if (selectedIndexInDirection < cbDirection.Items.Count)
+			{
+				cbDirection.SelectedIndex = selectedIndexInDirection;
+			}
+			else
+			{
+				badDirection = true;
+			}
+			if (directionName != cbDirection.SelectedItem?.ToString()) badDirection = true;
+			if (badDirection)
+			{
+				cbDirection.SelectedIndex = -1;
+				cbDirection.Text = "Выберите направление обучения";
+				MessageBox.Show(this, "На данной фломе обучения нет такого направления", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				cbDirection.Select();
 			}
 		}
 
@@ -266,24 +263,6 @@ AND
 			}
 			bool wrong_days = false;
 
-			/*
-			if
-				(
-				!ComboBoxOK(cbLearningForm) ||
-				!ComboBoxOK(cbDirection) ||
-				!ComboBoxOK(cbTime)
-				)
-			{
-				MessageBox.Show
-					(
-					this,
-					"Ничего не выбрано",
-					"Wth",
-					MessageBoxButtons.OK,
-					MessageBoxIcon.Error
-					);
-			}*/
-
 			if (cbLearningForm.SelectedItem.ToString() == "Стационар"		&& lcbWeek.CheckedItems.Count != 3)
 			{
 				wrong_days = true;
@@ -329,23 +308,10 @@ AND
 			storage.GetDataFromBase("Directions");
 			storage.GetDataFromBase("LearningTimes");
 			storage.GetDataFromBase("Groups");
-			/*string insert_cmd =
-				$@"
-INSERT INTO 
-	Groups(group_name, direction, learning_time, learning_days)
-VALUES 
-	(
-	'{tbGroupName.Text}', 
-	{set.Tables["Directions"].Select($"direction_name = '{cbDirection.SelectedItem.ToString()}'")[0]["direction_id"]}, 
-	{set.Tables["LearningTimes"].Select($"time_name = '{cbTime.SelectedItem.ToString()}'")[0]["time_id"]},
-	{GetBitSet()}
-	)
-				";*/
 
-			//storage.Adapter.Update(storage.Set);
-			//storage.Insert(insert_cmd);
-
-			DataRow row = storage.Set.Tables["Groups"].NewRow();
+			if (storage.Set.Tables["Groups"].Select($"group_name = '{tbGroupName.Text}'").Length == 0)
+			{
+				DataRow row = storage.Set.Tables["Groups"].NewRow();
 
 			row["group_name"]		= tbGroupName.Text;
 			row["direction"]		= storage.Set.Tables["Directions"].Select($"direction_name = '{cbDirection.SelectedItem.ToString()}'")[0]["direction_id"];
@@ -355,6 +321,12 @@ VALUES
 			storage.Set.Tables["Groups"].Rows.Add(row);
 			storage.Adapter.Update(storage.Set,"Groups");
 			this.Close();
+
+			}
+			else
+			{
+				MessageBox.Show(this, "Такая группа уже есть", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			}
 		}
 	}
 }
